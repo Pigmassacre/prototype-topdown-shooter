@@ -43,7 +43,9 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new RenderSystem(getCamera()));
         //getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
-        createTestEntity();
+        for (int i = 0; i < 3; i++) {
+            createTestEntity();
+        }
     }
 
     private void createTestEntity() {
