@@ -87,7 +87,7 @@ public class CollisionSystem extends EntitySystem {
                 circleCollision1.circle.x = position1.x + circleCollision1.circle.radius;
                 circleCollision1.circle.y = position1.y + circleCollision1.circle.radius;
 
-                MapObjects objects = Level.map.getLayers().get(0).getObjects();
+                MapObjects objects = Level.getMap().getLayers().get(0).getObjects();
                 for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
                     Rectangle rectangle = rectangleObject.getRectangle();
                     if (Intersector.overlaps(circleCollision1.circle, rectangle)) {
@@ -130,7 +130,7 @@ public class CollisionSystem extends EntitySystem {
                 rectangleCollision1.rectangle.x = position1.x;
                 rectangleCollision1.rectangle.y = position1.y;
 
-                MapObjects objects = Level.map.getLayers().get(0).getObjects();
+                MapObjects objects = Level.getMap().getLayers().get(0).getObjects();
                 for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
                     Rectangle rectangle = rectangleObject.getRectangle();
                     if (Intersector.overlaps(rectangleCollision1.rectangle, rectangle)) {

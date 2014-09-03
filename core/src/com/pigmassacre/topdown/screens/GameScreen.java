@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -28,7 +27,7 @@ public class GameScreen extends AbstractScreen {
         getGame().inputMultiplexer.addProcessor(new PlayerInputProcessor(getEngine()));
         Gdx.input.setInputProcessor(getGame().inputMultiplexer);
 
-        Level.map = new TmxMapLoader().load("maps/test.tmx");
+        Level.loadMap("maps/test.tmx");
 
         getEngine().addSystem(new PlayerControlledSystem());
         getEngine().addSystem(new AccelerationSystem());
@@ -37,6 +36,7 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new GravitySystem());
         getEngine().addSystem(new CollisionSystem());
         getEngine().addSystem(new MapCollisionSystem());
+        getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
         getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
@@ -46,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     private void createTestEntity() {
         Entity entity = getEngine().createEntity();
 
-        Array<RectangleMapObject> objects = Level.map.getLayers().get("Spawn Positions").getObjects().getByType(RectangleMapObject.class);
+        Array<RectangleMapObject> objects = Level.getMap().getLayers().get("Spawn Positions").getObjects().getByType(RectangleMapObject.class);
         Rectangle rectangle = objects.get(MathUtils.random(objects.size - 1)).getRectangle();
 
         PositionComponent position = getEngine().createComponent(PositionComponent.class);
@@ -73,6 +73,8 @@ public class GameScreen extends AbstractScreen {
         entity.add(getEngine().createComponent(GravityComponent.class));
 
         entity.add(getEngine().createComponent(MapCollisionComponent.class));
+
+        entity.add(getEngine().createComponent(CameraFocusComponent.class));
 
         getEngine().addEntity(entity);
     }

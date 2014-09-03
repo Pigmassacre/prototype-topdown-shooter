@@ -24,8 +24,16 @@ public class RenderSystem extends EntitySystem {
     private ComponentMapper<VisualComponent> visualMapper = ComponentMapper.getFor(VisualComponent.class);
 
     public RenderSystem(OrthographicCamera camera) {
+        super();
         this.batch = new SpriteBatch();
-        this.mapRenderer = new OrthogonalTiledMapRenderer(Level.map, batch);
+        this.mapRenderer = new OrthogonalTiledMapRenderer(Level.getMap(), batch);
+        this.camera = camera;
+    }
+
+    public RenderSystem(int priority, OrthographicCamera camera) {
+        super(priority);
+        this.batch = new SpriteBatch();
+        this.mapRenderer = new OrthogonalTiledMapRenderer(Level.getMap(), batch);
         this.camera = camera;
     }
 

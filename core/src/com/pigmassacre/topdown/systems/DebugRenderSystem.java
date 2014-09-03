@@ -22,6 +22,13 @@ public class DebugRenderSystem extends EntitySystem {
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
     public DebugRenderSystem(Camera camera) {
+        super();
+        this.shapeRenderer = new ShapeRenderer();
+        this.camera = camera;
+    }
+
+    public DebugRenderSystem(int priority, Camera camera) {
+        super(priority);
         this.shapeRenderer = new ShapeRenderer();
         this.camera = camera;
     }
@@ -40,7 +47,7 @@ public class DebugRenderSystem extends EntitySystem {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        MapObjects objects = Level.map.getLayers().get(0).getObjects();
+        MapObjects objects = Level.getMap().getLayers().get(0).getObjects();
         for (RectangleMapObject object : objects.getByType(RectangleMapObject.class)) {
             shapeRenderer.rect(object.getRectangle().x, object.getRectangle().y, object.getRectangle().width, object.getRectangle().height);
         }
