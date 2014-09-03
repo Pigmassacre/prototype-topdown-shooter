@@ -53,11 +53,8 @@ public class DebugRenderSystem extends EntitySystem {
         }
 
         for (int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
-
-            collision = collisionMapper.get(entity);
-
-            shapeRenderer.rect(collision.rectangle.x, collision.rectangle.y, collision.rectangle.width, collision.rectangle.height  );
+            collision = collisionMapper.get(entities.get(i));
+            shapeRenderer.rect(collision.rectangle.x, collision.rectangle.y, collision.rectangle.width, collision.rectangle.height);
         }
 
         shapeRenderer.end();

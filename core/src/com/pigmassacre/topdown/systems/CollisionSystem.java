@@ -112,7 +112,7 @@ public class CollisionSystem extends EntitySystem {
                             }
                         }
                     } else {
-                        rectangleCollision2 = rectangleMapper.get(entity1);
+                        rectangleCollision2 = rectangleMapper.get(entity2);
 
                         rectangleCollision2.rectangle.x = position2.x;
                         rectangleCollision2.rectangle.y = position2.y;
@@ -155,7 +155,7 @@ public class CollisionSystem extends EntitySystem {
                             }
                         }
                     } else {
-                        rectangleCollision2 = rectangleMapper.get(entity1);
+                        rectangleCollision2 = rectangleMapper.get(entity2);
 
                         rectangleCollision2.rectangle.x = position2.x;
                         rectangleCollision2.rectangle.y = position2.y;

@@ -2,6 +2,7 @@ package com.pigmassacre.topdown.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.pigmassacre.topdown.Constants;
 import com.pigmassacre.topdown.components.GravityComponent;
 import com.pigmassacre.topdown.components.VelocityComponent;
 
@@ -27,7 +28,7 @@ public class GravitySystem extends EntitySystem {
 
             velocity = velocityMapper.get(entity);
 
-            velocity.z -= 10f * deltaTime;
+            velocity.z -= 8f * Constants.TARGET_FRAME_RATE * deltaTime;
         }
     }
 }

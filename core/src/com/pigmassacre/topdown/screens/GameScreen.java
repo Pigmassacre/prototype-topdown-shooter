@@ -41,10 +41,8 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new BounceSystem());
         getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
-        //getEngine().addSystem(new DebugRenderSystem(getCamera()));
+        getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
-        createTestEntity();
-        createTestEntity();
         createTestEntity();
     }
 
@@ -67,8 +65,6 @@ public class GameScreen extends AbstractScreen {
         RectangleCollisionComponent collision = getEngine().createComponent(RectangleCollisionComponent.class);
         collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);
         entity.add(collision);
-
-        getCamera().position.set(rectangle.x, rectangle.y, 0);
 
         VelocityComponent velocity = getEngine().createComponent(VelocityComponent.class);
         entity.add(velocity);

@@ -1,15 +1,17 @@
 package com.pigmassacre.topdown;
 
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.pigmassacre.topdown.components.PlayerControlledComponent;
-import com.pigmassacre.topdown.components.VelocityComponent;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.pigmassacre.topdown.components.*;
 
 /**
  * Created by pigmassacre on 2014-08-28.
@@ -18,10 +20,14 @@ public class PlayerInputProcessor extends InputAdapter {
     private ImmutableArray<Entity> entities;
 
     private ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
+    private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<PlayerControlledComponent> playerControlledMapper = ComponentMapper.getFor(PlayerControlledComponent.class);
 
-    public PlayerInputProcessor(Engine engine) {
-        entities = engine.getEntitiesFor(Family.getFor(VelocityComponent.class, PlayerControlledComponent.class));
+    private PooledEngine engine;
+
+    public PlayerInputProcessor(PooledEngine engine) {
+        this.engine = engine;
+        entities = engine.getEntitiesFor(Family.getFor(PositionComponent.class, VelocityComponent.class, PlayerControlledComponent.class));
     }
 
     @Override
@@ -33,11 +39,15 @@ public class PlayerInputProcessor extends InputAdapter {
                     VelocityComponent velocity = velocityMapper.get(entities.get(i));
                     PlayerControlledComponent playerControlled = playerControlledMapper.get(entities.get(i));
                     if (!playerControlled.isInAir) {
-                        velocity.z = 10f;
+                        velocity.z = 2f * Constants.TARGET_FRAME_RATE;
                     }
                 }
                 break;
             case Input.Keys.X:
+                for (int i = 0; i < entities.size(); i++) {
+                    PositionComponent position = positionMapper.get(entities.get(i));
+                    createBouncyBullet(position.x, position.y);
+                }
                 break;
             case Input.Keys.C:
                 break;
@@ -68,6 +78,9 @@ public class PlayerInputProcessor extends InputAdapter {
                     playerControlled.isMovingLeft = false;
                     playerControlled.isMovingRight = true;
                 }
+                break;
+            case Input.Keys.ESCAPE:
+                Gdx.app.exit();
                 break;
         }
         return false;
@@ -109,5 +122,37 @@ public class PlayerInputProcessor extends InputAdapter {
                 break;
         }
         return false;
+    }
+
+    public void createBouncyBullet(float x, float y) {
+        Entity entity = engine.createEntity();
+
+        PositionComponent position = engine.createComponent(PositionComponent.class);
+        position.init(x, y, 0);
+        entity.add(position);
+
+        VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
+        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("player.png"))));
+        entity.add(visualComponent);
+
+        RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
+        collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);
+        entity.add(collision);
+
+        VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
+        velocity.x = MathUtils.random(-velocity.maxX, velocity.maxX);
+        velocity.y = MathUtils.random(-velocity.maxY, velocity.maxY);
+        entity.add(velocity);
+
+        AccelerationComponent accelerationComponent = engine.createComponent(AccelerationComponent.class);
+        entity.add(accelerationComponent);
+
+        entity.add(engine.createComponent(GravityComponent.class));
+
+        entity.add(engine.createComponent(MapCollisionComponent.class));
+
+        entity.add(engine.createComponent(BounceComponent.class));
+
+        engine.addEntity(entity);
     }
 }
