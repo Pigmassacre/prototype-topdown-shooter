@@ -38,6 +38,7 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new GravitySystem());
         getEngine().addSystem(new CollisionSystem());
         getEngine().addSystem(new MapCollisionSystem());
+        getEngine().addSystem(new BounceSystem());
         getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
         //getEngine().addSystem(new DebugRenderSystem(getCamera()));
