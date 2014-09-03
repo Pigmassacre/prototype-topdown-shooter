@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class VisualComponent extends Component implements Pool.Poolable {
     public TextureRegion image;
+    public float scaleX = 1f;
+    public float scaleY = 1f;
 
     public void init(TextureRegion image) {
         this.image = image;
@@ -17,5 +19,7 @@ public class VisualComponent extends Component implements Pool.Poolable {
     @Override
     public void reset() {
         this.image = null;
+        scaleX = 1f;
+        scaleY = 1f;
     }
 }

@@ -62,7 +62,7 @@ public class RenderSystem extends EntitySystem {
             position = positionMapper.get(entity);
             visual = visualMapper.get(entity);
 
-            batch.draw(visual.image, position.x, position.y + position.z);
+            batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
         }
 
         batch.end();

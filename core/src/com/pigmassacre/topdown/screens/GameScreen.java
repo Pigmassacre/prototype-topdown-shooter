@@ -3,6 +3,8 @@ package com.pigmassacre.topdown.screens;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -38,8 +40,10 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new MapCollisionSystem());
         getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
-        getEngine().addSystem(new DebugRenderSystem(getCamera()));
+        //getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
+        createTestEntity();
+        createTestEntity();
         createTestEntity();
     }
 
@@ -53,8 +57,14 @@ public class GameScreen extends AbstractScreen {
         position.init(rectangle.x, rectangle.y, 0);
         entity.add(position);
 
+        VisualComponent visualComponent = getEngine().createComponent(VisualComponent.class);
+        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("player.png"))));
+        visualComponent.scaleX = 2f;
+        visualComponent.scaleY = 2f;
+        entity.add(visualComponent);
+
         RectangleCollisionComponent collision = getEngine().createComponent(RectangleCollisionComponent.class);
-        collision.init(32f, 32f);
+        collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);
         entity.add(collision);
 
         getCamera().position.set(rectangle.x, rectangle.y, 0);
