@@ -34,14 +34,14 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new PlayerControlledSystem());
         getEngine().addSystem(new AccelerationSystem());
         getEngine().addSystem(new DecelerationSystem());
+        getEngine().addSystem(new CollisionSystem());
         getEngine().addSystem(new MovementSystem());
         getEngine().addSystem(new GravitySystem());
-        getEngine().addSystem(new CollisionSystem());
         getEngine().addSystem(new MapCollisionSystem());
         getEngine().addSystem(new BounceSystem());
         getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
-        getEngine().addSystem(new DebugRenderSystem(getCamera()));
+        //getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
         createTestEntity();
     }

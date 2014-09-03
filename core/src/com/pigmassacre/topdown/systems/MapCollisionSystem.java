@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pigmassacre.topdown.components.MapCollisionComponent;
@@ -22,7 +23,7 @@ public class MapCollisionSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
-    private ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
+    //private ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
     private Signal<MapObjectCollisionSignal> collisionSignal = new Signal<MapObjectCollisionSignal>();
@@ -59,65 +60,89 @@ public class MapCollisionSystem extends EntitySystem {
         collisionSystem.registerMapCollisionListener(new Listener<CollisionSystem.MapCollisionSignal>() {
             @Override
             public void receive(Signal<CollisionSystem.MapCollisionSignal> signal, CollisionSystem.MapCollisionSignal object) {
-                handleCollision(object);
+                if (object.handleX) handleCollisionX(object);
+                else handleCollisionY(object);
             }
         });
     }
 
-    private void handleCollision(CollisionSystem.MapCollisionSignal object) {
-        Entity entity = object.entity;
-        MapObject mapObject = object.object;
+    public void handleCollisionX(CollisionSystem.MapCollisionSignal signal) {
+        Entity entity = signal.entity;
+        MapObject mapObject = signal.object;
 
         if (entities.contains(entity, false)) {
             PositionComponent position = positionMapper.get(entity);
-            VelocityComponent velocity = velocityMapper.get(entity);
             RectangleCollisionComponent collision = collisionMapper.get(entity);
 
-            boolean left = false, right = false, up = false, down = false;
+            boolean left = false, right = false;
 
             if (mapObject instanceof RectangleMapObject) {
                 RectangleMapObject rectangleMapObject = (RectangleMapObject) mapObject;
                 Rectangle rectangle = rectangleMapObject.getRectangle();
                 Vector2 center = rectangle.getCenter(new Vector2());
 
-                float xOverlap, yOverlap;
+                if (Intersector.overlaps(collision.rectangle, rectangle)) {
+                    float xOverlap;
 
-                float wx = collision.rectangle.x + (collision.rectangle.width / 2f) - center.x;
+                    float wx = collision.rectangle.x + (collision.rectangle.width / 2f) - center.x;
 
-                if (wx > 0) {
-                    xOverlap = (rectangle.x + rectangle.width) - collision.rectangle.x;
-                } else {
-                    xOverlap = rectangle.x - (collision.rectangle.x + collision.rectangle.width);
-                }
+                    if (wx > 0) {
+                        xOverlap = (rectangle.x + rectangle.width) - collision.rectangle.x;
+                    } else {
+                        xOverlap = rectangle.x - (collision.rectangle.x + collision.rectangle.width);
+                    }
 
-                float hy = collision.rectangle.y + (collision.rectangle.height / 2f) - center.y;
-
-                if (hy > 0) {
-                    yOverlap = (rectangle.y + rectangle.height) - collision.rectangle.y;
-                } else {
-                    yOverlap = rectangle.y - (collision.rectangle.y + collision.rectangle.height);
-                }
-
-                if (Math.abs(xOverlap) < Math.abs(yOverlap)) {
                     if (xOverlap > 0) left = true;
                     else right = true;
-                    //velocity.x = 0f;
                     collision.rectangle.x += xOverlap;
-                } else {
-                    if (yOverlap > 0) up = true;
-                    else down = true;
-                    collision.rectangle.y += yOverlap;
-                    //velocity.y = 0f;
                 }
             }
 
             position.x = collision.rectangle.x;
+
+            if (left)
+                collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.LEFT));
+            else if (right)
+                collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.RIGHT));
+        }
+    }
+
+    public void handleCollisionY(CollisionSystem.MapCollisionSignal signal) {
+        Entity entity = signal.entity;
+        MapObject mapObject = signal.object;
+
+        if (entities.contains(entity, false)) {
+            PositionComponent position = positionMapper.get(entity);
+            RectangleCollisionComponent collision = collisionMapper.get(entity);
+
+            boolean up = false, down = false;
+
+            if (mapObject instanceof RectangleMapObject) {
+                RectangleMapObject rectangleMapObject = (RectangleMapObject) mapObject;
+                Rectangle rectangle = rectangleMapObject.getRectangle();
+                Vector2 center = rectangle.getCenter(new Vector2());
+
+                if (Intersector.overlaps(collision.rectangle, rectangle)) {
+                    float yOverlap;
+
+                    float hy = collision.rectangle.y + (collision.rectangle.height / 2f) - center.y;
+
+                    if (hy > 0) {
+                        yOverlap = (rectangle.y + rectangle.height) - collision.rectangle.y;
+                    } else {
+                        yOverlap = rectangle.y - (collision.rectangle.y + collision.rectangle.height);
+                    }
+
+                    if (yOverlap > 0) up = true;
+                    else down = true;
+                    collision.rectangle.y += yOverlap;
+                }
+            }
+
             position.y = collision.rectangle.y;
 
             if (up) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.UP));
             else if (down) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.DOWN));
-            else if (left) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.LEFT));
-            else if (right) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.RIGHT));
         }
     }
 }

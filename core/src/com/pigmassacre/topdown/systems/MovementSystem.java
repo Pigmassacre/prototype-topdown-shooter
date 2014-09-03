@@ -14,9 +14,12 @@ public class MovementSystem extends EntitySystem {
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
 
+    private CollisionSystem collisionSystem;
+
     @Override
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.getFor(PositionComponent.class, VelocityComponent.class));
+        collisionSystem = engine.getSystem(CollisionSystem.class);
     }
 
     @Override
@@ -38,7 +41,13 @@ public class MovementSystem extends EntitySystem {
             if (velocity.z < -velocity.maxZ) velocity.z = -velocity.maxZ;
 
             position.x += velocity.x * deltaTime;
+            //float oldX = position.x;
+            collisionSystem.checkCollision(entity, true);
+            //if (oldX != position.x) System.out.println("x movement prohibited");
             position.y += velocity.y * deltaTime;
+            //float oldY = position.y;
+            collisionSystem.checkCollision(entity, false);
+            //if (oldY != position.y) System.out.println("y movement prohibited");
             position.z += velocity.z * deltaTime;
 
             if (position.z < 0) position.z = 0;
