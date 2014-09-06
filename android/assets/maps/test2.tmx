@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="32" height="16" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16">
+  <image source="tileset.png" width="96" height="64"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="32" height="16">
+  <data encoding="base64" compression="zlib">
+   eJztlEsOgCAMBRHxgx/uf1xLAglpSqWAxoWLWdF25AlYpdQC7EJWwHZiBAYhOumv+f50D63+mv50Ruw3wATMRC1ee8K/hVwOohavPeHvkb/J5MfNOEO2ES7/iMv4tWA/vpY6u1z+d+dX6q/9d7n83It+KpNcftS5aPVLs8Ku3/9NP77rpW8CB3UvvB+/PfhtiZTWceAZvv8CYGwHRg==
+  </data>
+ </layer>
+ <objectgroup name="collision" width="32" height="16">
+  <object x="0" y="0" width="32" height="128"/>
+  <object x="160" y="96" width="64" height="32"/>
+  <object x="160" y="48" width="48" height="32"/>
+  <object x="48" y="48" width="48" height="32"/>
+  <object x="32" y="96" width="64" height="32"/>
+  <object x="0" y="128" width="16" height="128"/>
+  <object x="16" y="240" width="64" height="16"/>
+  <object x="80" y="224" width="96" height="32"/>
+  <object x="176" y="240" width="64" height="16"/>
+  <object x="32" y="0" width="192" height="16"/>
+  <object x="224" y="0" width="64" height="128"/>
+  <object x="240" y="128" width="112" height="32"/>
+  <object x="320" y="80" width="32" height="48"/>
+  <object x="288" y="0" width="224" height="32"/>
+  <object x="496" y="32" width="16" height="224"/>
+  <object x="448" y="240" width="48" height="16"/>
+  <object x="416" y="144" width="32" height="112"/>
+  <object x="240" y="224" width="176" height="32"/>
+ </objectgroup>
+ <objectgroup name="spawn" width="32" height="16">
+  <object x="48" y="176" width="16" height="16"/>
+  <object x="192" y="160" width="16" height="16"/>
+  <object x="112" y="32" width="16" height="16"/>
+  <object x="208" y="64" width="16" height="16"/>
+  <object x="48" y="80" width="16" height="16"/>
+  <object x="176" y="224" width="16" height="16"/>
+  <object x="128" y="112" width="16" height="16"/>
+  <object x="384" y="64" width="16" height="16"/>
+  <object x="368" y="192" width="16" height="16"/>
+  <object x="464" y="96" width="16" height="16"/>
+ </objectgroup>
+</map>

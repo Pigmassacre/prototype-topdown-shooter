@@ -16,10 +16,10 @@ import com.pigmassacre.topdown.components.RectangleCollisionComponent;
  * Created by pigmassacre on 2014-08-27.
  */
 public class CameraSystem extends EntitySystem {
+    private static final float minimumXSpace = 64f;
+    private static final float minimumYSpace = 64f;
     private ImmutableArray<Entity> entities;
-
     private OrthographicCamera camera;
-
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
@@ -37,9 +37,6 @@ public class CameraSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.getFor(ComponentType.getBitsFor(CameraFocusComponent.class, PositionComponent.class), ComponentType.getBitsFor(RectangleCollisionComponent.class, CircleCollisionComponent.class), new Bits()));
     }
-
-    private static final float minimumXSpace = 64f;
-    private static final float minimumYSpace = 64f;
 
     @Override
     public void update(float deltaTime) {
@@ -83,7 +80,7 @@ public class CameraSystem extends EntitySystem {
         float xZoom = width / camera.viewportWidth;
         float yZoom = height / camera.viewportHeight;
 
-        camera.zoom = MathUtils.clamp(Math.max(xZoom, yZoom), 0.75f, Level.getMapWidth() / camera.viewportWidth);
+        camera.zoom = MathUtils.clamp(Math.max(xZoom, yZoom), 1f, Math.min(Level.getMapWidth() / camera.viewportWidth, Level.getMapHeight() / camera.viewportHeight));
 
         float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
         float effectiveViewportHeight = camera.viewportHeight * camera.zoom;

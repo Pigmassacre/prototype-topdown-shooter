@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pigmassacre.topdown.Topdown;
 
 public class AbstractScreen implements Screen {
-
     private final Topdown game;
     private final FPSLogger fpsLogger;
 
@@ -21,9 +20,7 @@ public class AbstractScreen implements Screen {
         this.game = game;
         fpsLogger = new FPSLogger();
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false, 32, 32);
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        viewport = new ExtendViewport(800, 480, camera);
+        viewport = new ExtendViewport(16 * 16, 16 * (Gdx.graphics.getHeight() / Gdx.graphics.getWidth()) * 16, camera);
     }
 
     public OrthographicCamera getCamera() {

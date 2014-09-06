@@ -9,11 +9,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class Level {
     private static TiledMap map;
 
+    private static int mapTileSize;
+    private static int mapWidth, mapHeight;
+
     public static TiledMap getMap() {
         return map;
     }
-
-    private static int mapWidth, mapHeight;
 
     public static int getMapWidth() {
         return mapWidth;
@@ -21,6 +22,10 @@ public class Level {
 
     public static int getMapHeight() {
         return mapHeight;
+    }
+
+    public static int getMapTileSize() {
+        return mapTileSize;
     }
 
     public static void loadMap(String path) {
@@ -33,5 +38,7 @@ public class Level {
 
         mapWidth = mapTileWidth * tilePixelWidth;
         mapHeight = mapTileHeight * tilePixelHeight;
+
+        mapTileSize = Math.max(mapTileWidth, mapTileHeight);
     }
 }

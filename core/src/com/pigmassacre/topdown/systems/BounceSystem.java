@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.maps.MapObject;
-import com.pigmassacre.topdown.components.AccelerationComponent;
 import com.pigmassacre.topdown.components.BounceComponent;
 import com.pigmassacre.topdown.components.VelocityComponent;
 

@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Bits;
 import com.pigmassacre.topdown.Constants;
+import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.components.AccelerationComponent;
 import com.pigmassacre.topdown.components.DecelerationComponent;
 import com.pigmassacre.topdown.components.PlayerControlledComponent;
@@ -38,9 +39,9 @@ public class PlayerControlledSystem extends EntitySystem {
 
             if (acceleration != null) {
                 if (playerControlled.isMovingUp) {
-                    acceleration.y = 2f * Constants.TARGET_FRAME_RATE;
+                    acceleration.y = 0.5f * Constants.TARGET_FRAME_RATE;
                 } else if (playerControlled.isMovingDown) {
-                    acceleration.y = -2f * Constants.TARGET_FRAME_RATE;
+                    acceleration.y = -0.5f * Constants.TARGET_FRAME_RATE;
                 }
 
                 if (!playerControlled.isMovingUp && !playerControlled.isMovingDown) {
@@ -48,9 +49,9 @@ public class PlayerControlledSystem extends EntitySystem {
                 }
 
                 if (playerControlled.isMovingLeft) {
-                    acceleration.x = -2f * Constants.TARGET_FRAME_RATE;
+                    acceleration.x = -0.5f * Constants.TARGET_FRAME_RATE;
                 } else if (playerControlled.isMovingRight) {
-                    acceleration.x = 2f * Constants.TARGET_FRAME_RATE;
+                    acceleration.x = 0.5f * Constants.TARGET_FRAME_RATE;
                 }
 
                 if (!playerControlled.isMovingLeft && !playerControlled.isMovingRight) {
@@ -60,13 +61,13 @@ public class PlayerControlledSystem extends EntitySystem {
 
             if (deceleration != null) {
                 if (!playerControlled.isMovingUp && !playerControlled.isMovingDown) {
-                    deceleration.y = 3f * Constants.TARGET_FRAME_RATE;
+                    deceleration.y = 1f * Constants.TARGET_FRAME_RATE;
                 } else {
                     deceleration.y = 0f;
                 }
 
                 if (!playerControlled.isMovingLeft && !playerControlled.isMovingRight) {
-                    deceleration.x = 3f * Constants.TARGET_FRAME_RATE;
+                    deceleration.x = 1f * Constants.TARGET_FRAME_RATE;
                 } else {
                     deceleration.x = 0f;
                 }

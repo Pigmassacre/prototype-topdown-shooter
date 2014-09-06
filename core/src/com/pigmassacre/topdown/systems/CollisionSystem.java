@@ -26,15 +26,7 @@ public class CollisionSystem extends EntitySystem {
     private ComponentMapper<RectangleCollisionComponent> rectangleMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
     private Signal<EntityCollisionSignal> entityCollisionSignal = new Signal<EntityCollisionSignal>();
-
-    public class EntityCollisionSignal {
-        public Entity entity1, entity2;
-
-        public EntityCollisionSignal(Entity entity1, Entity entity2) {
-            this.entity1 = entity1;
-            this.entity2 = entity2;
-        }
-    }
+    private Signal<MapCollisionSignal> mapCollisionSignal = new Signal<MapCollisionSignal>();
 
     public void registerEntityCollisionListener(Listener<EntityCollisionSignal> listener) {
         entityCollisionSignal.add(listener);
@@ -42,20 +34,6 @@ public class CollisionSystem extends EntitySystem {
 
     public void unregisterEntityCollisionListener(Listener<EntityCollisionSignal> listener) {
         entityCollisionSignal.remove(listener);
-    }
-
-    private Signal<MapCollisionSignal> mapCollisionSignal = new Signal<MapCollisionSignal>();
-
-    public class MapCollisionSignal {
-        public Entity entity;
-        public MapObject object;
-        public boolean handleX;
-
-        public MapCollisionSignal(Entity entity, MapObject object, boolean handleX) {
-            this.entity = entity;
-            this.object = object;
-            this.handleX = handleX;
-        }
     }
 
     public void registerMapCollisionListener(Listener<MapCollisionSignal> listener) {
@@ -84,7 +62,7 @@ public class CollisionSystem extends EntitySystem {
             circleCollision1.circle.x = position1.x + circleCollision1.circle.radius;
             circleCollision1.circle.y = position1.y + circleCollision1.circle.radius;
 
-            MapObjects objects = Level.getMap().getLayers().get(0).getObjects();
+            MapObjects objects = Level.getMap().getLayers().get("collision").getObjects();
             for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
                 Rectangle rectangle = rectangleObject.getRectangle();
                 if (Intersector.overlaps(circleCollision1.circle, rectangle)) {
@@ -127,7 +105,7 @@ public class CollisionSystem extends EntitySystem {
             rectangleCollision1.rectangle.x = position1.x;
             rectangleCollision1.rectangle.y = position1.y;
 
-            MapObjects objects = Level.getMap().getLayers().get(0).getObjects();
+            MapObjects objects = Level.getMap().getLayers().get("collision").getObjects();
             for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
                 Rectangle rectangle = rectangleObject.getRectangle();
                 if (Intersector.overlaps(rectangleCollision1.rectangle, rectangle)) {
@@ -164,6 +142,27 @@ public class CollisionSystem extends EntitySystem {
                     }
                 }
             }
+        }
+    }
+
+    public class EntityCollisionSignal {
+        public Entity entity1, entity2;
+
+        public EntityCollisionSignal(Entity entity1, Entity entity2) {
+            this.entity1 = entity1;
+            this.entity2 = entity2;
+        }
+    }
+
+    public class MapCollisionSignal {
+        public Entity entity;
+        public MapObject object;
+        public boolean handleX;
+
+        public MapCollisionSignal(Entity entity, MapObject object, boolean handleX) {
+            this.entity = entity;
+            this.object = object;
+            this.handleX = handleX;
         }
     }
 }

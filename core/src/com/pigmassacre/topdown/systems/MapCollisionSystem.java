@@ -5,16 +5,13 @@ import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pigmassacre.topdown.components.MapCollisionComponent;
 import com.pigmassacre.topdown.components.PositionComponent;
 import com.pigmassacre.topdown.components.RectangleCollisionComponent;
-import com.pigmassacre.topdown.components.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.
@@ -27,22 +24,6 @@ public class MapCollisionSystem extends EntitySystem {
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
     private Signal<MapObjectCollisionSignal> collisionSignal = new Signal<MapObjectCollisionSignal>();
-
-    public enum MapObjectSide {
-        UP, DOWN, LEFT, RIGHT
-    }
-
-    public class MapObjectCollisionSignal {
-        public Entity entity;
-        public MapObject object;
-        public MapObjectSide side;
-
-        public MapObjectCollisionSignal(Entity entity, MapObject object, MapObjectSide side) {
-            this.entity = entity;
-            this.object = object;
-            this.side = side;
-        }
-    }
 
     public void registerMapCollisionListener(Listener<MapObjectCollisionSignal> listener) {
         collisionSignal.add(listener);
@@ -95,15 +76,15 @@ public class MapCollisionSystem extends EntitySystem {
                     if (xOverlap > 0) left = true;
                     else right = true;
                     collision.rectangle.x += xOverlap;
+
+                    position.x = collision.rectangle.x;
+
+                    if (left)
+                        collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.LEFT));
+                    else if (right)
+                        collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.RIGHT));
                 }
             }
-
-            position.x = collision.rectangle.x;
-
-            if (left)
-                collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.LEFT));
-            else if (right)
-                collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.RIGHT));
         }
     }
 
@@ -136,13 +117,30 @@ public class MapCollisionSystem extends EntitySystem {
                     if (yOverlap > 0) up = true;
                     else down = true;
                     collision.rectangle.y += yOverlap;
+
+                    position.y = collision.rectangle.y;
+
+                    if (up) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.UP));
+                    else if (down)
+                        collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.DOWN));
                 }
             }
+        }
+    }
 
-            position.y = collision.rectangle.y;
+    public enum MapObjectSide {
+        UP, DOWN, LEFT, RIGHT
+    }
 
-            if (up) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.UP));
-            else if (down) collisionSignal.dispatch(new MapObjectCollisionSignal(entity, mapObject, MapObjectSide.DOWN));
+    public class MapObjectCollisionSignal {
+        public Entity entity;
+        public MapObject object;
+        public MapObjectSide side;
+
+        public MapObjectCollisionSignal(Entity entity, MapObject object, MapObjectSide side) {
+            this.entity = entity;
+            this.object = object;
+            this.side = side;
         }
     }
 }
