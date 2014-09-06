@@ -153,6 +153,10 @@ public class PlayerInputProcessor extends InputAdapter {
 
         entity.add(engine.createComponent(MapCollisionComponent.class));
 
+        EntityCollisionComponent entityCollisionComponent = engine.createComponent(EntityCollisionComponent.class);
+        entityCollisionComponent.destroyOnCollision = true;
+        entity.add(entityCollisionComponent);
+
         entity.add(engine.createComponent(BounceComponent.class));
 
         engine.addEntity(entity);

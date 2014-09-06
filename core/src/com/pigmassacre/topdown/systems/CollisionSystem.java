@@ -73,28 +73,25 @@ public class CollisionSystem extends EntitySystem {
             for (int j = 0; j < entities.size(); j++) {
                 Entity entity2 = entities.get(j);
 
-                position2 = positionMapper.get(entity2);
+                if (entity != entity2) {
+                    position2 = positionMapper.get(entity2);
+                    circleCollision2 = circleMapper.get(entity2);
 
-                circleCollision2 = circleMapper.get(entity2);
+                    if (circleCollision2 != null) {
+                        circleCollision2.circle.x = position2.x + circleCollision2.circle.radius;
+                        circleCollision2.circle.y = position2.y + circleCollision2.circle.radius;
 
-                if (circleCollision2 != null) {
-                    circleCollision2.circle.x = position2.x + circleCollision2.circle.radius;
-                    circleCollision2.circle.y = position2.y + circleCollision2.circle.radius;
-
-                    if (entity != entity2) {
                         if (circleCollision1.circle.overlaps(circleCollision2.circle)) {
-                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2));
+                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2, handleX));
                         }
-                    }
-                } else {
-                    rectangleCollision2 = rectangleMapper.get(entity2);
+                    } else {
+                        rectangleCollision2 = rectangleMapper.get(entity2);
 
-                    rectangleCollision2.rectangle.x = position2.x;
-                    rectangleCollision2.rectangle.y = position2.y;
+                        rectangleCollision2.rectangle.x = position2.x;
+                        rectangleCollision2.rectangle.y = position2.y;
 
-                    if (entity != entity2) {
                         if (Intersector.overlaps(circleCollision1.circle, rectangleCollision2.rectangle)) {
-                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2));
+                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2, handleX));
                         }
                     }
                 }
@@ -116,28 +113,26 @@ public class CollisionSystem extends EntitySystem {
             for (int j = 0; j < entities.size(); j++) {
                 Entity entity2 = entities.get(j);
 
-                position2 = positionMapper.get(entity2);
+                if (entity != entity2) {
+                    position2 = positionMapper.get(entity2);
 
-                circleCollision2 = circleMapper.get(entity2);
+                    circleCollision2 = circleMapper.get(entity2);
 
-                if (circleCollision2 != null) {
-                    circleCollision2.circle.x = position2.x + circleCollision2.circle.radius;
-                    circleCollision2.circle.y = position2.y + circleCollision2.circle.radius;
+                    if (circleCollision2 != null) {
+                        circleCollision2.circle.x = position2.x + circleCollision2.circle.radius;
+                        circleCollision2.circle.y = position2.y + circleCollision2.circle.radius;
 
-                    if (entity != entity2) {
                         if (Intersector.overlaps(circleCollision2.circle, rectangleCollision1.rectangle)) {
-                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2));
+                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2, handleX));
                         }
-                    }
-                } else {
-                    rectangleCollision2 = rectangleMapper.get(entity2);
+                    } else {
+                        rectangleCollision2 = rectangleMapper.get(entity2);
 
-                    rectangleCollision2.rectangle.x = position2.x;
-                    rectangleCollision2.rectangle.y = position2.y;
+                        rectangleCollision2.rectangle.x = position2.x;
+                        rectangleCollision2.rectangle.y = position2.y;
 
-                    if (entity != entity2) {
                         if (Intersector.overlaps(rectangleCollision1.rectangle, rectangleCollision2.rectangle)) {
-                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2));
+                            entityCollisionSignal.dispatch(new EntityCollisionSignal(entity, entity2, handleX));
                         }
                     }
                 }
@@ -147,10 +142,12 @@ public class CollisionSystem extends EntitySystem {
 
     public class EntityCollisionSignal {
         public Entity entity1, entity2;
+        public boolean handleX;
 
-        public EntityCollisionSignal(Entity entity1, Entity entity2) {
+        public EntityCollisionSignal(Entity entity1, Entity entity2, boolean handleX) {
             this.entity1 = entity1;
             this.entity2 = entity2;
+            this.handleX = handleX;
         }
     }
 

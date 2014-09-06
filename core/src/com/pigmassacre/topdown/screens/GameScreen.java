@@ -31,10 +31,12 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new MovementSystem());
         getEngine().addSystem(new GravitySystem());
         getEngine().addSystem(new MapCollisionSystem());
+        getEngine().addSystem(new EntityCollisionSystem());
         getEngine().addSystem(new BounceSystem());
+        getEngine().addSystem(new RemovalSystem());
         getEngine().addSystem(new CameraSystem(getCamera()));
         getEngine().addSystem(new RenderSystem(getCamera()));
-        //getEngine().addSystem(new DebugRenderSystem(getCamera()));
+        getEngine().addSystem(new DebugRenderSystem(getCamera()));
 
         for (int i = 0; i < 3; i++) {
             PlayerCharacter.createPlayerCharacter(getEngine());
