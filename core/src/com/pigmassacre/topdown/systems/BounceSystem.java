@@ -18,11 +18,20 @@ public class BounceSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.getFor(BounceComponent.class, VelocityComponent.class));
-        MapCollisionSystem collisionSystem = engine.getSystem(MapCollisionSystem.class);
+        MapCollisionSystem mapCollisionSystem = engine.getSystem(MapCollisionSystem.class);
 
-        collisionSystem.registerMapCollisionListener(new Listener<MapCollisionSystem.MapObjectCollisionSignal>() {
+        mapCollisionSystem.registerMapCollisionListener(new Listener<MapCollisionSystem.MapObjectCollisionSignal>() {
             @Override
             public void receive(Signal<MapCollisionSystem.MapObjectCollisionSignal> signal, MapCollisionSystem.MapObjectCollisionSignal object) {
+                handleCollision(object);
+            }
+        });
+
+        EntityCollisionSystem entityCollisionSystem = engine.getSystem(EntityCollisionSystem.class);
+
+        entityCollisionSystem.registerEntityCollisionListener(new Listener<EntityCollisionSystem.EntityObjectCollisionSignal>() {
+            @Override
+            public void receive(Signal<EntityCollisionSystem.EntityObjectCollisionSignal> signal, EntityCollisionSystem.EntityObjectCollisionSignal object) {
                 handleCollision(object);
             }
         });
@@ -31,6 +40,30 @@ public class BounceSystem extends EntitySystem {
     private void handleCollision(MapCollisionSystem.MapObjectCollisionSignal object) {
         Entity entity = object.entity;
         MapCollisionSystem.MapObjectSide side = object.side;
+
+        if (entities.contains(entity, false)) {
+            VelocityComponent velocity = velocityMapper.get(entity);
+
+            switch (side) {
+                case UP:
+                case DOWN:
+                    velocity.y = -velocity.y;
+                    break;
+                case LEFT:
+                case RIGHT:
+                    velocity.x = -velocity.x;
+                    break;
+                case TOP:
+                case BOTTOM:
+                    velocity.z = -velocity.z;
+                    break;
+            }
+        }
+    }
+
+    private void handleCollision(EntityCollisionSystem.EntityObjectCollisionSignal object) {
+        Entity entity = object.entity1;
+        EntityCollisionSystem.EntitySide side = object.side;
 
         if (entities.contains(entity, false)) {
             VelocityComponent velocity = velocityMapper.get(entity);

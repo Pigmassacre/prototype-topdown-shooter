@@ -128,7 +128,7 @@ public class PlayerInputProcessor extends InputAdapter {
         Entity entity = engine.createEntity();
 
         PositionComponent position = engine.createComponent(PositionComponent.class);
-        position.init(x, y, 0);
+        position.init(x, y, 8f);
         entity.add(position);
 
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
@@ -154,10 +154,11 @@ public class PlayerInputProcessor extends InputAdapter {
         entity.add(engine.createComponent(MapCollisionComponent.class));
 
         EntityCollisionComponent entityCollisionComponent = engine.createComponent(EntityCollisionComponent.class);
-        entityCollisionComponent.destroyOnCollision = true;
         entity.add(entityCollisionComponent);
 
         entity.add(engine.createComponent(BounceComponent.class));
+
+        entity.add(engine.createComponent(EnemyCollisionComponent.class));
 
         engine.addEntity(entity);
     }

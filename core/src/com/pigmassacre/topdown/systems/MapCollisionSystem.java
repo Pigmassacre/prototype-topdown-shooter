@@ -41,8 +41,17 @@ public class MapCollisionSystem extends EntitySystem {
         collisionSystem.registerMapCollisionListener(new Listener<CollisionSystem.MapCollisionSignal>() {
             @Override
             public void receive(Signal<CollisionSystem.MapCollisionSignal> signal, CollisionSystem.MapCollisionSignal object) {
-                if (object.handleX) handleCollisionX(object);
-                else handleCollisionY(object);
+                switch (object.axis) {
+                    case X:
+                        handleCollisionX(object);
+                        break;
+                    case Y:
+                        handleCollisionY(object);
+                        break;
+                    case Z:
+                        handleCollisionZ(object);
+                        break;
+                }
             }
         });
     }
@@ -128,8 +137,20 @@ public class MapCollisionSystem extends EntitySystem {
         }
     }
 
+    public void handleCollisionZ(CollisionSystem.MapCollisionSignal signal) {
+        Entity entity = signal.entity;
+
+        if (entities.contains(entity, false)) {
+            PositionComponent position = positionMapper.get(entity);
+
+            position.z = 0f;
+
+            collisionSignal.dispatch(new MapObjectCollisionSignal(entity, null, MapObjectSide.BOTTOM));
+        }
+    }
+
     public enum MapObjectSide {
-        UP, DOWN, LEFT, RIGHT
+        UP, DOWN, LEFT, RIGHT, TOP, BOTTOM
     }
 
     public class MapObjectCollisionSignal {

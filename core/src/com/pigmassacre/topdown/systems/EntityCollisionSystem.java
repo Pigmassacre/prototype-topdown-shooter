@@ -41,8 +41,16 @@ public class EntityCollisionSystem extends EntitySystem {
         collisionSystem.registerEntityCollisionListener(new Listener<CollisionSystem.EntityCollisionSignal>() {
             @Override
             public void receive(Signal<CollisionSystem.EntityCollisionSignal> signal, CollisionSystem.EntityCollisionSignal object) {
-                if (object.handleX) handleCollisionX(object);
-                else handleCollisionY(object);
+                switch (object.axis) {
+                    case X:
+                        handleCollisionX(object);
+                        break;
+                    case Y:
+                        handleCollisionY(object);
+                        break;
+                    case Z:
+                        break;
+                }
             }
         });
     }

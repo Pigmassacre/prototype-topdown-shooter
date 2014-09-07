@@ -41,16 +41,13 @@ public class MovementSystem extends EntitySystem {
             if (velocity.z < -velocity.maxZ) velocity.z = -velocity.maxZ;
 
             position.x += velocity.x * deltaTime;
-            //float oldX = position.x;
-            collisionSystem.checkCollision(entity, true);
-            //if (oldX != position.x) System.out.println("x movement prohibited");
-            position.y += velocity.y * deltaTime;
-            //float oldY = position.y;
-            collisionSystem.checkCollision(entity, false);
-            //if (oldY != position.y) System.out.println("y movement prohibited");
-            position.z += velocity.z * deltaTime;
+            collisionSystem.checkCollision(entity, CollisionSystem.CollisionAxis.X);
 
-            if (position.z < 0) position.z = 0;
+            position.y += velocity.y * deltaTime;
+            collisionSystem.checkCollision(entity, CollisionSystem.CollisionAxis.Y);
+
+            position.z += velocity.z * deltaTime;
+            collisionSystem.checkCollision(entity, CollisionSystem.CollisionAxis.Z);
         }
     }
 }
