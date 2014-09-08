@@ -44,9 +44,8 @@ public class PlayerInputProcessor extends InputAdapter {
                 break;
             case Input.Keys.X:
                 for (int i = 0; i < entities.size(); i++) {
-                    PositionComponent position = positionMapper.get(entities.get(i));
-                    VelocityComponent velocity = velocityMapper.get(entities.get(i));
-                    createBouncyBullet(position.x, position.y, velocity.x, velocity.y);
+                    PlayerControlledComponent playerControlled = playerControlledMapper.get(entities.get(i));
+                    playerControlled.isShooting = true;
                 }
                 break;
             case Input.Keys.C:
@@ -93,6 +92,10 @@ public class PlayerInputProcessor extends InputAdapter {
             case Input.Keys.Z:
                 break;
             case Input.Keys.X:
+                for (int i = 0; i < entities.size(); i++) {
+                    PlayerControlledComponent playerControlled = playerControlledMapper.get(entities.get(i));
+                    playerControlled.isShooting = false;
+                }
                 break;
             case Input.Keys.C:
                 break;
@@ -122,44 +125,5 @@ public class PlayerInputProcessor extends InputAdapter {
                 break;
         }
         return false;
-    }
-
-    public void createBouncyBullet(float x, float y, float velocityX, float velocityY) {
-        Entity entity = engine.createEntity();
-
-        PositionComponent position = engine.createComponent(PositionComponent.class);
-        position.init(x, y, 8f);
-        entity.add(position);
-
-        VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
-        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("bullet.png"))));
-        entity.add(visualComponent);
-
-        RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
-        collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);
-        entity.add(collision);
-
-        VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
-        velocity.maxX *= 2f;
-        velocity.maxY *= 2f;
-        velocity.x = velocityX * 2f;
-        velocity.y = velocityY * 2f;
-        entity.add(velocity);
-
-        AccelerationComponent accelerationComponent = engine.createComponent(AccelerationComponent.class);
-        entity.add(accelerationComponent);
-
-        entity.add(engine.createComponent(GravityComponent.class));
-
-        entity.add(engine.createComponent(MapCollisionComponent.class));
-
-        EntityCollisionComponent entityCollisionComponent = engine.createComponent(EntityCollisionComponent.class);
-        entity.add(entityCollisionComponent);
-
-        entity.add(engine.createComponent(BounceComponent.class));
-
-        entity.add(engine.createComponent(EnemyCollisionComponent.class));
-
-        engine.addEntity(entity);
     }
 }

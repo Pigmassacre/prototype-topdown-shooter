@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.pigmassacre.topdown.Level;
+import com.pigmassacre.topdown.components.DirectionComponent;
 import com.pigmassacre.topdown.components.PositionComponent;
+import com.pigmassacre.topdown.components.RotationComponent;
 import com.pigmassacre.topdown.components.VisualComponent;
 
 /**
@@ -21,6 +24,7 @@ public class RenderSystem extends EntitySystem {
     private OrthographicCamera camera;
 
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<RotationComponent> rotationMapper = ComponentMapper.getFor(RotationComponent.class);
     private ComponentMapper<VisualComponent> visualMapper = ComponentMapper.getFor(VisualComponent.class);
 
     public RenderSystem(OrthographicCamera camera) {
@@ -42,10 +46,10 @@ public class RenderSystem extends EntitySystem {
         entities = engine.getEntitiesFor(Family.getFor(PositionComponent.class, VisualComponent.class));
     }
 
-
     @Override
     public void update(float deltaTime) {
         PositionComponent position;
+        RotationComponent rotation;
         VisualComponent visual;
 
         camera.update();
@@ -60,9 +64,14 @@ public class RenderSystem extends EntitySystem {
             Entity entity = entities.get(i);
 
             position = positionMapper.get(entity);
+            rotation = rotationMapper.get(entity);
             visual = visualMapper.get(entity);
 
-            batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
+            if (rotation != null) {
+                batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, rotation.angle * MathUtils.radiansToDegrees);
+            } else {
+                batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
+            }
         }
 
         batch.end();

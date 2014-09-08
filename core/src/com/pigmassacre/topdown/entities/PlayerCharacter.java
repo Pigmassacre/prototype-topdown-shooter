@@ -46,6 +46,11 @@ public class PlayerCharacter {
         pc.init(1);
         entity.add(pc);
 
+        DirectionComponent directionComponent = engine.createComponent(DirectionComponent.class);
+        directionComponent.x = 0f;
+        directionComponent.y = -1f;
+        entity.add(directionComponent);
+
         entity.add(engine.createComponent(GravityComponent.class));
 
         entity.add(engine.createComponent(MapCollisionComponent.class));

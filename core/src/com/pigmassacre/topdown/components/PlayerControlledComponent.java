@@ -14,6 +14,7 @@ public class PlayerControlledComponent extends Component implements Pool.Poolabl
     public boolean isMovingDown = false;
     public boolean isJumping = false;
     public boolean isInAir = false;
+    public boolean isShooting = false;
 
     public void init(int number) {
         this.number = number;
@@ -28,5 +29,6 @@ public class PlayerControlledComponent extends Component implements Pool.Poolabl
         isMovingDown = false;
         isJumping = false;
         isInAir = false;
+        isShooting = false;
     }
 }
