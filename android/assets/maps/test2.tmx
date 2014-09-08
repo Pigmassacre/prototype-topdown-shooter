@@ -3,9 +3,14 @@
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16">
   <image source="tileset.png" width="96" height="64"/>
  </tileset>
- <layer name="Tile Layer 1" width="32" height="16">
+ <layer name="floor" width="32" height="16">
   <data encoding="base64" compression="zlib">
-   eJztlEsOgCAMBRHxgx/uf1xLAglpSqWAxoWLWdF25AlYpdQC7EJWwHZiBAYhOumv+f50D63+mv50Ruw3wATMRC1ee8K/hVwOohavPeHvkb/J5MfNOEO2ES7/iMv4tWA/vpY6u1z+d+dX6q/9d7n83It+KpNcftS5aPVLs8Ku3/9NP77rpW8CB3UvvB+/PfhtiZTWceAZvv8CYGwHRg==
+   eJxjZGBgYBzFo3gUj+JRPIpH8YjCAAx4AgE=
+  </data>
+ </layer>
+ <layer name="walls" width="32" height="16">
+  <data encoding="base64" compression="zlib">
+   eJztlNkKhDAMRYPbuMz4/587FQmEcBOTVt8UzoM07WkvaRci+hS2JHNhuYme8l8n5tfsX56B/UNhLEzAp8ekv2b/co3e+I/U3ulf6czlC2r1mOU/ckL5ef4fndkyXv7Mbvg7iuchz3DVj1Ztqx/1rpc/6l+Z35701/YOz4/mh/qi1Y8ysfJDrlZ/5nv9cb++69E3wQPdi8Ov3x79tjDROg+9Rnb+E/wB6WEHwg==
   </data>
  </layer>
  <objectgroup name="collision" width="32" height="16">

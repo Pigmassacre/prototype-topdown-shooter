@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import com.pigmassacre.topdown.Level;
+import com.pigmassacre.topdown.PerspectiveTiledMapRenderer;
 import com.pigmassacre.topdown.components.ShadowComponent;
 import com.pigmassacre.topdown.components.movement.PositionComponent;
 import com.pigmassacre.topdown.components.movement.RotationComponent;
 import com.pigmassacre.topdown.components.VisualComponent;
+
+import java.util.Comparator;
 
 /**
  * Created by pigmassacre on 2014-08-27.
@@ -22,7 +26,7 @@ public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     private SpriteBatch batch;
-    private MapRenderer mapRenderer;
+    private PerspectiveTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
 
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
@@ -33,14 +37,14 @@ public class RenderSystem extends EntitySystem {
     public RenderSystem(OrthographicCamera camera) {
         super();
         this.batch = new SpriteBatch();
-        this.mapRenderer = new OrthogonalTiledMapRenderer(Level.getMap(), batch);
+        this.mapRenderer = new PerspectiveTiledMapRenderer("walls", Level.getMap(), batch);
         this.camera = camera;
     }
 
     public RenderSystem(int priority, OrthographicCamera camera) {
         super(priority);
         this.batch = new SpriteBatch();
-        this.mapRenderer = new OrthogonalTiledMapRenderer(Level.getMap(), batch);
+        this.mapRenderer = new PerspectiveTiledMapRenderer("walls", Level.getMap(), batch);
         this.camera = camera;
     }
 
@@ -81,8 +85,9 @@ public class RenderSystem extends EntitySystem {
             }
         }
 
-        for (int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
+        Array<Entity> sorted = sortForDrawing(entities);
+        /*for (int i = 0; i < sorted.size; i++) {
+            Entity entity = sorted.get(i);
 
             position = positionMapper.get(entity);
             rotation = rotationMapper.get(entity);
@@ -90,6 +95,15 @@ public class RenderSystem extends EntitySystem {
 
             draw(position, visual, rotation);
         }
+
+        batch.end();*/
+
+        mapRenderer.renderPerspective(sorted, new RenderMethod() {
+            @Override
+            public void render(Entity entity) {
+                draw(positionMapper.get(entity), visualMapper.get(entity), rotationMapper.get(entity));
+            }
+        });
 
         batch.end();
     }
@@ -108,5 +122,27 @@ public class RenderSystem extends EntitySystem {
         } else {
             batch.draw(visual.image, position.x + visual.offsetX, position.y + visual.offsetY + position.z, visual.originX, visual.originY, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
         }
+    }
+
+    private Array<Entity> sortForDrawing(ImmutableArray<Entity> entitiesToSort) {
+        Array<Entity> sortedEntities = new Array<Entity>(entitiesToSort.toArray());
+        sortedEntities.sort(new Comparator<Entity>() {
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                PositionComponent position1, position2;
+
+                position1 = positionMapper.get(o1);
+                position2 = positionMapper.get(o2);
+
+                if (position1.y > position2.y) return -1;
+                else if (position1.y < position2.y) return 1;
+                return 0;
+            }
+        });
+        return sortedEntities;
+    }
+
+    public interface RenderMethod {
+        public void render(Entity entity);
     }
 }
