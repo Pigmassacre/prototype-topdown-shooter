@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.pigmassacre.topdown.components.BounceComponent;
-import com.pigmassacre.topdown.components.VelocityComponent;
+import com.pigmassacre.topdown.components.movement.BounceComponent;
+import com.pigmassacre.topdown.components.movement.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

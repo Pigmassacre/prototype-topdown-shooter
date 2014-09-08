@@ -2,8 +2,8 @@ package com.pigmassacre.topdown.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.VelocityComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.movement.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

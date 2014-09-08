@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Bits;
 import com.pigmassacre.topdown.Level;
-import com.pigmassacre.topdown.components.CircleCollisionComponent;
-import com.pigmassacre.topdown.components.PolygonCollisionComponent;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.collision.CircleCollisionComponent;
+import com.pigmassacre.topdown.components.collision.PolygonCollisionComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

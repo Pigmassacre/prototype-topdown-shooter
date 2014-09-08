@@ -4,12 +4,13 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pigmassacre.topdown.components.*;
+import com.pigmassacre.topdown.components.collision.EntityCollisionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

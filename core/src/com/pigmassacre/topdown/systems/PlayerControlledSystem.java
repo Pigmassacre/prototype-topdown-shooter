@@ -6,14 +6,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Bits;
 import com.pigmassacre.topdown.Constants;
-import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.components.*;
-
-import javax.swing.text.Position;
+import com.pigmassacre.topdown.components.collision.EnemyCollisionComponent;
+import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.collision.StickToMapComponent;
+import com.pigmassacre.topdown.components.movement.*;
 
 /**
  * Created by pigmassacre on 2014-08-27.

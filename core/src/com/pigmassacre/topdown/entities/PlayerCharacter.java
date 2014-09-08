@@ -11,13 +11,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.components.*;
+import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.movement.*;
+import com.pigmassacre.topdown.components.weapons.HolsterComponent;
 
 /**
  * Created by pigmassacre on 2014-09-06.
  */
 public class PlayerCharacter {
 
-    public static void createPlayerCharacter(PooledEngine engine) {
+    public static Entity createPlayerCharacter(PooledEngine engine) {
         Entity entity = engine.createEntity();
 
         Array<RectangleMapObject> objects = Level.getMap().getLayers().get("spawn").getObjects().getByType(RectangleMapObject.class);
@@ -57,7 +61,11 @@ public class PlayerCharacter {
 
         entity.add(engine.createComponent(CameraFocusComponent.class));
 
+        HolsterComponent holsterComponent =  engine.createComponent(HolsterComponent.class);
+        entity.add(holsterComponent);
+
         engine.addEntity(entity);
+        return entity;
     }
 
 }

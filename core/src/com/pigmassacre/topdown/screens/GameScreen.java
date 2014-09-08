@@ -1,12 +1,16 @@
 package com.pigmassacre.topdown.screens;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.pigmassacre.topdown.DebugInputProcessor;
 import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.PlayerInputProcessor;
 import com.pigmassacre.topdown.Topdown;
+import com.pigmassacre.topdown.components.weapons.HolsterComponent;
 import com.pigmassacre.topdown.entities.PlayerCharacter;
+import com.pigmassacre.topdown.entities.Weapons;
 import com.pigmassacre.topdown.systems.*;
 
 /**

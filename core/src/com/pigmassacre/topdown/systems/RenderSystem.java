@@ -8,9 +8,8 @@ import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.pigmassacre.topdown.Level;
-import com.pigmassacre.topdown.components.DirectionComponent;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RotationComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.movement.RotationComponent;
 import com.pigmassacre.topdown.components.VisualComponent;
 
 /**

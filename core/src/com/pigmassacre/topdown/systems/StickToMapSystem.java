@@ -4,7 +4,11 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.pigmassacre.topdown.components.*;
+import com.pigmassacre.topdown.components.collision.StickToMapComponent;
+import com.pigmassacre.topdown.components.movement.AccelerationComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.movement.RotationComponent;
+import com.pigmassacre.topdown.components.movement.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

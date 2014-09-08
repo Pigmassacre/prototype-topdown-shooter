@@ -8,9 +8,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.pigmassacre.topdown.components.*;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.movement.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-28.

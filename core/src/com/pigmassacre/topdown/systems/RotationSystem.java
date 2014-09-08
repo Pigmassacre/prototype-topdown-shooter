@@ -3,9 +3,8 @@ package com.pigmassacre.topdown.systems;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.MathUtils;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RotationComponent;
-import com.pigmassacre.topdown.components.VelocityComponent;
+import com.pigmassacre.topdown.components.movement.RotationComponent;
+import com.pigmassacre.topdown.components.movement.VelocityComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

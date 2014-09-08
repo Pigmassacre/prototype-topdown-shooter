@@ -9,9 +9,9 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.pigmassacre.topdown.components.MapCollisionComponent;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

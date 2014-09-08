@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.pigmassacre.topdown.Level;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.

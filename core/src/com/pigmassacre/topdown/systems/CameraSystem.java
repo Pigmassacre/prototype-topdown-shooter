@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Bits;
 import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.components.CameraFocusComponent;
-import com.pigmassacre.topdown.components.CircleCollisionComponent;
-import com.pigmassacre.topdown.components.PositionComponent;
-import com.pigmassacre.topdown.components.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.collision.CircleCollisionComponent;
+import com.pigmassacre.topdown.components.movement.PositionComponent;
+import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 
 /**
  * Created by pigmassacre on 2014-08-27.
