@@ -20,7 +20,6 @@ public class MapCollisionSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
-    //private ComponentMapper<VelocityComponent> velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 
     private Signal<MapObjectCollisionSignal> collisionSignal = new Signal<MapObjectCollisionSignal>();

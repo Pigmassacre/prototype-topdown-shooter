@@ -1,52 +1,38 @@
 package com.pigmassacre.topdown;
 
+import com.badlogic.ashley.core.ComponentType;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.Bits;
+import com.pigmassacre.topdown.components.PlayerControlledComponent;
 
 /**
  * Created by pigmassacre on 2014-08-28.
  */
 public class DebugInputProcessor extends InputAdapter {
-    private OrthographicCamera camera;
+    private PooledEngine engine;
 
-    public DebugInputProcessor(OrthographicCamera camera) {
-        this.camera = camera;
+    public DebugInputProcessor(PooledEngine engine) {
+        this.engine = engine;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         Gdx.app.log(toString(), Input.Keys.toString(keycode) + " pressed!");
         switch (keycode) {
-            case Input.Keys.W:
-                camera.translate(0, 32);
-                break;
-            case Input.Keys.S:
-                camera.translate(0, -32);
-                break;
-            case Input.Keys.A:
-                camera.translate(-32, 0);
-                break;
-            case Input.Keys.D:
-                camera.translate(32, 0);
+            case Input.Keys.R:
+                ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.getFor(new Bits(), new Bits(), ComponentType.getBitsFor(PlayerControlledComponent.class)));
+                for (int i = 0; i < entities.size(); i++) {
+                    engine.removeEntity(entities.get(i));
+                }
                 break;
         }
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        Gdx.app.log(toString(), Input.Keys.toString(keycode) + " released!");
-        switch (keycode) {
-
-        }
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        camera.zoom += amount / 32f;
         return false;
     }
 }

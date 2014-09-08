@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Bits;
 import com.pigmassacre.topdown.Level;
 import com.pigmassacre.topdown.components.CircleCollisionComponent;
+import com.pigmassacre.topdown.components.PolygonCollisionComponent;
 import com.pigmassacre.topdown.components.PositionComponent;
 import com.pigmassacre.topdown.components.RectangleCollisionComponent;
 
@@ -22,6 +23,7 @@ public class CollisionSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
+    private ComponentMapper<PolygonCollisionComponent> polygonMapper = ComponentMapper.getFor(PolygonCollisionComponent.class);
     private ComponentMapper<CircleCollisionComponent> circleMapper = ComponentMapper.getFor(CircleCollisionComponent.class);
     private ComponentMapper<RectangleCollisionComponent> rectangleMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
 

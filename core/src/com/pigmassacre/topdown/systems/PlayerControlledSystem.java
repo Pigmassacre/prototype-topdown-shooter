@@ -140,7 +140,7 @@ public class PlayerControlledSystem extends EntitySystem {
         Entity entity = engine.createEntity();
 
         PositionComponent position = engine.createComponent(PositionComponent.class);
-        position.init(x, y, 4f);
+        position.init(x, y, 0f);
         entity.add(position);
 
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
@@ -148,8 +148,17 @@ public class PlayerControlledSystem extends EntitySystem {
         entity.add(visualComponent);
 
         RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
-        collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);
+        collision.init(4f, 4f);
         entity.add(collision);
+
+        //visualComponent.offsetX = collision.rectangle.width - visualComponent.image.getRegionWidth();
+        //visualComponent.offsetY = collision.rectangle.height - visualComponent.image.getRegionHeight();
+        //visualComponent.originX -= visualComponent.offsetX + collision.rectangle.width / 2f;
+        //visualComponent.originY -= visualComponent.offsetY + collision.rectangle.height / 2f;
+        visualComponent.originX = visualComponent.image.getRegionWidth() - collision.rectangle.width / 2f;
+        visualComponent.originY = visualComponent.image.getRegionHeight() / 2f;
+        visualComponent.offsetX = -visualComponent.originX + collision.rectangle.width / 2f;
+        visualComponent.offsetY = -visualComponent.originY + collision.rectangle.height / 2f;
 
         VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
         float angle = MathUtils.atan2(directionY, directionX);
@@ -172,7 +181,9 @@ public class PlayerControlledSystem extends EntitySystem {
         //EntityCollisionComponent entityCollisionComponent = engine.createComponent(EntityCollisionComponent.class);
         //entity.add(entityCollisionComponent);
 
-        entity.add(engine.createComponent(BounceComponent.class));
+        //entity.add(engine.createComponent(BounceComponent.class));
+
+        entity.add(engine.createComponent(StickToMapComponent.class));
 
         entity.add(engine.createComponent(EnemyCollisionComponent.class));
 

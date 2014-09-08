@@ -18,7 +18,7 @@ public class GameScreen extends AbstractScreen {
         super(game);
 
         getGame().inputMultiplexer = new InputMultiplexer();
-        getGame().inputMultiplexer.addProcessor(new DebugInputProcessor(getCamera()));
+        getGame().inputMultiplexer.addProcessor(new DebugInputProcessor(getEngine()));
         getGame().inputMultiplexer.addProcessor(new PlayerInputProcessor(getEngine()));
         Gdx.input.setInputProcessor(getGame().inputMultiplexer);
 
@@ -32,6 +32,7 @@ public class GameScreen extends AbstractScreen {
         getEngine().addSystem(new GravitySystem());
         getEngine().addSystem(new MapCollisionSystem());
         getEngine().addSystem(new EntityCollisionSystem());
+        getEngine().addSystem(new StickToMapSystem());
         getEngine().addSystem(new BounceSystem());
         getEngine().addSystem(new RotationSystem());
         getEngine().addSystem(new RemovalSystem());

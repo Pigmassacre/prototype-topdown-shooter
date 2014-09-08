@@ -68,9 +68,9 @@ public class RenderSystem extends EntitySystem {
             visual = visualMapper.get(entity);
 
             if (rotation != null) {
-                batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, rotation.angle * MathUtils.radiansToDegrees);
+                batch.draw(visual.image, position.x + visual.offsetX, position.y + visual.offsetY + position.z, visual.originX, visual.originY, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, rotation.angle * MathUtils.radiansToDegrees);
             } else {
-                batch.draw(visual.image, position.x, position.y + position.z, 0, 0, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
+                batch.draw(visual.image, position.x + visual.offsetX, position.y + visual.offsetY + position.z, visual.originX, visual.originY, visual.image.getRegionWidth(), visual.image.getRegionHeight(), visual.scaleX, visual.scaleY, 0f);
             }
         }
 

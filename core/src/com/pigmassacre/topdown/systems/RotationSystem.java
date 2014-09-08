@@ -32,7 +32,9 @@ public class RotationSystem extends EntitySystem {
             rotation = rotationMapper.get(entity);
             velocity = velocityMapper.get(entity);
 
-            rotation.angle = MathUtils.atan2(velocity.y, velocity.x);
+            if (rotation.rotateToVelocity) {
+                rotation.angle = MathUtils.atan2(velocity.y, velocity.x);
+            }
         }
     }
 }
