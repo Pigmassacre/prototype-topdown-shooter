@@ -10,7 +10,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.pigmassacre.topdown.Level;
-import com.pigmassacre.topdown.components.*;
+import com.pigmassacre.topdown.components.CameraFocusComponent;
+import com.pigmassacre.topdown.components.PlayerControlledComponent;
+import com.pigmassacre.topdown.components.ShadowComponent;
+import com.pigmassacre.topdown.components.VisualComponent;
 import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
 import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 import com.pigmassacre.topdown.components.movement.*;
@@ -34,6 +37,8 @@ public class PlayerCharacter {
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
         visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("player.png"))));
         entity.add(visualComponent);
+
+        entity.add(engine.createComponent(ShadowComponent.class));
 
         RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
         collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionWidth() * visualComponent.scaleX);

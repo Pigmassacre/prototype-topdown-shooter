@@ -9,6 +9,7 @@ import com.pigmassacre.topdown.components.*;
 import com.pigmassacre.topdown.components.collision.EntityCollisionComponent;
 import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
 import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
+import com.pigmassacre.topdown.components.movement.BobComponent;
 import com.pigmassacre.topdown.components.movement.GravityComponent;
 import com.pigmassacre.topdown.components.movement.PositionComponent;
 import com.pigmassacre.topdown.components.weapons.WeaponComponent;
@@ -22,12 +23,14 @@ public class Weapons {
         Entity entity = engine.createEntity();
 
         PositionComponent position = engine.createComponent(PositionComponent.class);
-        position.init(x, y, 0);
+        position.init(x, y, 8f);
         entity.add(position);
 
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
         visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("crossbow.png"))));
         entity.add(visualComponent);
+
+        entity.add(engine.createComponent(ShadowComponent.class));
 
         RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
         collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionHeight() * visualComponent.scaleX);
@@ -40,6 +43,8 @@ public class Weapons {
         entity.add(engine.createComponent(EntityCollisionComponent.class));
 
         entity.add(engine.createComponent(WeaponComponent.class));
+
+        entity.add(engine.createComponent(BobComponent.class));
 
         engine.addEntity(entity);
         return entity;
