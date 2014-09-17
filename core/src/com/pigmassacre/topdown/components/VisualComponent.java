@@ -1,6 +1,7 @@
 package com.pigmassacre.topdown.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool;
 
@@ -16,13 +17,9 @@ public class VisualComponent extends Component implements Pool.Poolable {
     public float scaleX = 1f;
     public float scaleY = 1f;
 
-    public void init(TextureRegion image) {
-        this.image = image;
-    }
-
     @Override
     public void reset() {
-        this.image = null;
+        image = null;
         offsetX = 0f;
         offsetY = 0f;
         originX = 0f;

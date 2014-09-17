@@ -4,16 +4,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.pigmassacre.topdown.Level;
-import com.pigmassacre.topdown.components.CameraFocusComponent;
-import com.pigmassacre.topdown.components.PlayerControlledComponent;
-import com.pigmassacre.topdown.components.ShadowComponent;
-import com.pigmassacre.topdown.components.VisualComponent;
+import com.pigmassacre.topdown.components.*;
 import com.pigmassacre.topdown.components.collision.MapCollisionComponent;
 import com.pigmassacre.topdown.components.collision.RectangleCollisionComponent;
 import com.pigmassacre.topdown.components.movement.*;
@@ -34,8 +32,40 @@ public class PlayerCharacter {
         position.init(rectangle.x, rectangle.y, 0);
         entity.add(position);
 
+        AnimationComponent animationComponent = engine.createComponent(AnimationComponent.class);
+
+        TextureRegion image = new TextureRegion(new Texture(Gdx.files.internal("player_walk.png")));
+        TextureRegion[][] splitSheet = image.split(11, 20);
+        TextureRegion[] frames = new TextureRegion[6 * 1];
+        TextureRegion[] flippedFrames = new TextureRegion[6 * 1];
+        int index = 0;
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 6; j++) {
+                frames[index++] = splitSheet[i][j];
+                TextureRegion flipped = new TextureRegion(splitSheet[i][j]);
+                flipped.flip(true, false);
+                flippedFrames[index - 1] = flipped;
+            }
+        }
+        Animation animation = new Animation(0.05f, frames);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+        animationComponent.movingRight = animation;
+
+        animation = new Animation(0.05f, flippedFrames);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+        animationComponent.movingLeft = animation;
+
+        TextureRegion standingLeft = new TextureRegion(new Texture(Gdx.files.internal("player.png")));
+        standingLeft.flip(true, false);
+        animationComponent.standingLeft = new Animation(0.1f, standingLeft);
+        animationComponent.standingRight = new Animation(0.1f, new TextureRegion(new Texture(Gdx.files.internal("player.png"))));
+
+        animationComponent.state = AnimationComponent.AnimationState.STANDING_RIGHT;
+
+        entity.add(animationComponent);
+
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
-        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("player.png"))));
+        visualComponent.image = animationComponent.standingLeft.getKeyFrame(0f);
         entity.add(visualComponent);
 
         entity.add(engine.createComponent(ShadowComponent.class));

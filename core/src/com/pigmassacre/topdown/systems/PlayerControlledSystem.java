@@ -29,11 +29,12 @@ public class PlayerControlledSystem extends EntitySystem {
     private ComponentMapper<PositionComponent> positionMapper = ComponentMapper.getFor(PositionComponent.class);
     private ComponentMapper<RectangleCollisionComponent> collisionMapper = ComponentMapper.getFor(RectangleCollisionComponent.class);
     private ComponentMapper<DirectionComponent> directionMapper = ComponentMapper.getFor(DirectionComponent.class);
+    private ComponentMapper<AnimationComponent> animationMapper = ComponentMapper.getFor(AnimationComponent.class);
 
     @Override
     public void addedToEngine(Engine engine) {
         this.engine = (PooledEngine) engine;
-        entities = engine.getEntitiesFor(Family.getFor(ComponentType.getBitsFor(PlayerControlledComponent.class), ComponentType.getBitsFor(AccelerationComponent.class, DecelerationComponent.class, PositionComponent.class, RectangleCollisionComponent.class, DirectionComponent.class), new Bits()));
+        entities = engine.getEntitiesFor(Family.getFor(ComponentType.getBitsFor(PlayerControlledComponent.class), ComponentType.getBitsFor(AccelerationComponent.class, DecelerationComponent.class, PositionComponent.class, RectangleCollisionComponent.class, DirectionComponent.class, AnimationComponent.class), new Bits()));
     }
 
     @Override
@@ -44,6 +45,7 @@ public class PlayerControlledSystem extends EntitySystem {
         PositionComponent position;
         RectangleCollisionComponent collision;
         DirectionComponent direction;
+        AnimationComponent animation;
 
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
@@ -51,6 +53,7 @@ public class PlayerControlledSystem extends EntitySystem {
             playerControlled = playerControlledMapper.get(entity);
             acceleration = accelerationMapper.get(entity);
             direction = directionMapper.get(entity);
+            animation = animationMapper.get(entity);
 
             if (acceleration != null) {
                 if (playerControlled.isMovingUp) {
@@ -64,12 +67,27 @@ public class PlayerControlledSystem extends EntitySystem {
                 }
 
                 if (playerControlled.isMovingLeft) {
+                    if (animation != null)
+                        animation.state = AnimationComponent.AnimationState.MOVING_LEFT;
                     acceleration.x = -0.5f * Constants.TARGET_FRAME_RATE;
                 } else if (playerControlled.isMovingRight) {
+                    if (animation != null)
+                        animation.state = AnimationComponent.AnimationState.MOVING_RIGHT;
                     acceleration.x = 0.5f * Constants.TARGET_FRAME_RATE;
                 }
 
                 if (!playerControlled.isMovingLeft && !playerControlled.isMovingRight) {
+                    if (animation != null) {
+                        if (direction != null) {
+                            if (direction.x > 0) {
+                                animation.state = AnimationComponent.AnimationState.STANDING_RIGHT;
+                            } else if (direction.x < 0) {
+                                animation.state = AnimationComponent.AnimationState.STANDING_LEFT;
+                            }
+                        } else {
+                            animation.state = AnimationComponent.AnimationState.STANDING_RIGHT;
+                        }
+                    }
                     acceleration.x = 0f;
                 }
             }
@@ -140,21 +158,17 @@ public class PlayerControlledSystem extends EntitySystem {
         Entity entity = engine.createEntity();
 
         PositionComponent position = engine.createComponent(PositionComponent.class);
-        position.init(x, y, 0f);
+        position.init(x, y, 4f);
         entity.add(position);
 
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
-        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("arrow.png"))));
+        visualComponent.image = new TextureRegion(new Texture(Gdx.files.internal("arrow.png")));
         entity.add(visualComponent);
 
         RectangleCollisionComponent collision = engine.createComponent(RectangleCollisionComponent.class);
         collision.init(4f, 4f);
         entity.add(collision);
 
-        //visualComponent.offsetX = collision.rectangle.width - visualComponent.image.getRegionWidth();
-        //visualComponent.offsetY = collision.rectangle.height - visualComponent.image.getRegionHeight();
-        //visualComponent.originX -= visualComponent.offsetX + collision.rectangle.width / 2f;
-        //visualComponent.originY -= visualComponent.offsetY + collision.rectangle.height / 2f;
         visualComponent.originX = visualComponent.image.getRegionWidth() - collision.rectangle.width / 2f;
         visualComponent.originY = visualComponent.image.getRegionHeight() / 2f;
         visualComponent.offsetX = -visualComponent.originX + collision.rectangle.width / 2f;
@@ -180,8 +194,6 @@ public class PlayerControlledSystem extends EntitySystem {
 
         //EntityCollisionComponent entityCollisionComponent = engine.createComponent(EntityCollisionComponent.class);
         //entity.add(entityCollisionComponent);
-
-        //entity.add(engine.createComponent(BounceComponent.class));
 
         entity.add(engine.createComponent(StickToMapComponent.class));
 

@@ -27,7 +27,7 @@ public class Weapons {
         entity.add(position);
 
         VisualComponent visualComponent = engine.createComponent(VisualComponent.class);
-        visualComponent.init(new TextureRegion(new Texture(Gdx.files.internal("crossbow.png"))));
+        visualComponent.image = new TextureRegion(new Texture(Gdx.files.internal("crossbow.png")));
         entity.add(visualComponent);
 
         entity.add(engine.createComponent(ShadowComponent.class));
@@ -36,7 +36,7 @@ public class Weapons {
         collision.init(visualComponent.image.getRegionWidth() * visualComponent.scaleX, visualComponent.image.getRegionHeight() * visualComponent.scaleX);
         entity.add(collision);
 
-        entity.add(engine.createComponent(GravityComponent.class));
+        //entity.add(engine.createComponent(GravityComponent.class));
 
         entity.add(engine.createComponent(MapCollisionComponent.class));
 
